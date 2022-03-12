@@ -6,6 +6,7 @@ const gridHeight = document.getElementById("inputHeight")
 const gridWidth = document.getElementById("inputWidth") // When size is submitted by the user, call makeGrid()
 const gridForm = document.getElementById("sizePicker")
 const submitBTN = document.getElementById("submit-BTN")
+const eraseBTN=document.getElementById("erase")
 let draw = false;
 
 function makeGrid() {
@@ -23,15 +24,15 @@ function makeGrid() {
         const tableRow = document.createElement("tr");
         // appends new table rows to the existing table
         table.appendChild(tableRow);
-        for (let d = 0; d < currentGridWidth; d++) {
-            // creates new table cells
+        for (let c = 0; c < currentGridWidth; c++) {
+            // creates the columns for the grid
             const newtableData = document.createElement("td");
             // assigns a class called pixel to the table cells
             newtableData.classList.toggle('pixel');
             // allows the user to drag over the cells the want to change color
-            newtableData.addEventListener("mouseover", function () {
+
+            newtableData.addEventListener("click", function () {
                 // Allows the user to drag and color the pixels of their choice
-                if (!draw) return
                 //this grabs the value of the Color that the user selects
                 var currentColor = colorInput.value;
                 // this changes the background color of each table data that the user mouses over
@@ -41,14 +42,18 @@ function makeGrid() {
             // While your mouse is clicked down it will allow you to color the cells that you drag it over.
             newtableData.addEventListener("mousedown", function () {
                 draw = true
+                var mouseDownColor = colorInput.value;
+                newtableData.style.backgroundColor = mouseDownColor;
 
-            })
-            newtableData.addEventListener("click", function () {
-                draw = true
             })
             // Does not allow you to color in pixels unless you hold down the left mouse
             newtableData.addEventListener("mouseup", function () {
                 draw = false
+            })
+            newtableData.addEventListener("mouseover", function () {
+                if (!draw) return
+                var currentColor = colorInput.value;
+                newtableData.style.backgroundColor = currentColor;
             })
             // allows you to reset the grid and removes the colored pixels
             submitBTN.addEventListener("click", function () {
@@ -60,11 +65,16 @@ function makeGrid() {
                 draw = false
             })
             // Adds new table cells to the table rows
-            tableRow.appendChild(newtableData)
+            tableRow.appendChild(newtableData);
 
 
         }
 
     }
 
+}
+function erasePixels(){
+    if(document.getElementsByTagName("td").style.backgroundColor!="#fff"){
+        document.getElementsByTagName("td").style.backgroundColor="#fff"
+    }
 }
